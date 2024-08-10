@@ -11,7 +11,7 @@ public class Movies {
 
     @Id
     @NotBlank
-    private String imdbID;
+    private long imdbID;
 
     @NotBlank
     private String title;
@@ -26,7 +26,7 @@ public class Movies {
 
     public Movies() {}
 
-    public Movies(String imdbID, String title, int year, String description, List<byte[]> images) {
+    public Movies(long imdbID, String title, int year, String description, List<byte[]> images) {
         this.imdbID = imdbID;
         this.title = title;
         this.year = year;
@@ -34,11 +34,11 @@ public class Movies {
         this.images = images;
     }
 
-    public String getImdbID() {
+    public long getImdbID() {
         return imdbID;
     }
 
-    public void setImdbID(String imdbID) {
+    public void setImdbID(long imdbID) {
         this.imdbID = imdbID;
     }
 
