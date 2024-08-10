@@ -1,7 +1,4 @@
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
 import java.util.List;
@@ -11,6 +8,7 @@ public class Movies {
 
     @Id
     @NotBlank
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long imdbID;
 
     @NotBlank

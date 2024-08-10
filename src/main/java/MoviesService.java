@@ -18,6 +18,10 @@ public class MoviesService {
         return movieRepository.findById(id);
     }
 
+    public List<Movies> searchByTitle(String title) {
+        return movieRepository.findByTitle(title);
+    }
+
     @Transactional
     public void addMovie(Movies movie) {
         movieRepository.persist(movie);
