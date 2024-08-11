@@ -15,8 +15,14 @@ public class MoviesAPI {
 
     @GET
     public Response getAllMovies() {
-        List<Movies> movies = moviesService.listAll();
-        return Response.ok(movies).build();
+        try {
+            List<Movies> movies = moviesService.listAll();
+            return Response.ok(movies).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("An error occurred while fetching the movies.")
+                    .build();
+        }
     }
 
     @GET
@@ -25,17 +31,23 @@ public class MoviesAPI {
         if (id < 0) {
             return Response.status(Response.Status.BAD_REQUEST).entity("ID cannot be null").build();
         }
-        Movies movie = moviesService.findById(id);
-        if (movie != null) {
-            return Response.ok(movie).build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).entity("Movie not found").build();
+        try {
+            Movies movie = moviesService.findById(id);
+            if (movie != null) {
+                return Response.ok(movie).build();
+            } else {
+                return Response.status(Response.Status.NOT_FOUND).entity("Movie not found").build();
+            }
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("An error occurred while fetching the movie.")
+                    .build();
         }
     }
 
     @POST
     public Response addMovie(Movies movie) {
-        if (movie == null || movie.getTitle() == null || movie.getTitle().trim().isEmpty() ) {
+        if (movie == null || movie.getTitle() == null || movie.getTitle().trim().isEmpty()) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Movie data cannot be null and title needs to be set").build();
         }
 
@@ -51,7 +63,7 @@ public class MoviesAPI {
     @PUT
     @Path("/{id}")
     public Response updateMovie(@PathParam("id") long id, Movies movie) {
-        if (movie == null || movie.getTitle() == null || movie.getTitle().trim().isEmpty() ) {
+        if (movie == null || movie.getTitle() == null || movie.getTitle().trim().isEmpty()) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Movie data cannot be null and title needs to be set").build();
         }
         try {
@@ -96,8 +108,14 @@ public class MoviesAPI {
         if (title == null || title.trim().isEmpty()) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Title lookup cannot be empty").build();
         }
-        List<Movies> movies = moviesService.searchByTitle(title);
-        return Response.ok(movies).build();
+        try {
+            List<Movies> movies = moviesService.searchByTitle(title);
+            return Response.ok(movies).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Error while searching for movies: " + e.getMessage()).build();
+        }
+
     }
 
 }
