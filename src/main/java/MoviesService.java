@@ -24,23 +24,32 @@ public class MoviesService {
 
     @Transactional
     public void addMovie(Movies movie) {
-        movieRepository.persist(movie);
+        movieRepository.getEntityManager().merge(movie);
     }
 
     @Transactional
-    public void updateMovie(long id, Movies movie) {
+    public void updateMovie(long id, Movies movie) throws Exception {
         Movies entity = movieRepository.findById(id);
         if (entity != null) {
             entity.setTitle(movie.getTitle());
             entity.setDescription(movie.getDescription());
             entity.setYear(movie.getYear());
             entity.setImages(movie.getImages());
-            movieRepository.persist(entity);
+            movieRepository.getEntityManager().merge(entity);
         }
+        else{
+            throw new Exception("Movie not found");
+        }
+
     }
 
     @Transactional
     public void deleteMovie(long id) {
         movieRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void deleteAllMovies() {
+        movieRepository.deleteAll();
     }
 }
