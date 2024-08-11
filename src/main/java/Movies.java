@@ -14,6 +14,7 @@ public class Movies {
     @NotBlank
     private String title;
 
+    @Column(name = "`year`")
     private int year;
 
     private String description;
